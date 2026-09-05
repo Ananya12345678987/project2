@@ -2,7 +2,6 @@
 
 <div class="row mt-3">
     <div class="col-8 offset-2">
-<body>
     <h1>Edit your listing</h1>
     <h3><%= listing.title %></h3>
 
@@ -24,12 +23,11 @@
         </div>
 
         <div class="mb-3">
-            Original Listing Image <br/>
+            <label class="form-label">Original Listing Image</label><br/>
             <% if(originalImageUrl){ %>
     <img src="<%= originalImageUrl %>" class="img-thumbnail" style="max-width:250px;">
 <% } %>
         </div>
-
 
         <div class="mb-3">
             <label for="image" class="form-label">Upload New Image</label>
@@ -38,12 +36,20 @@
             class="form-control" />
         </div>
 
-         <br><br>
-        
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select name="listing[category]" id="category" class="form-select" required>
+                <option value="" disabled <%= !listing.category ? "selected" : "" %>>Choose a category</option>
+                <% const categories = ["trending","rooms","iconic cities","mountain","castle","amazing","arctic","camping","farm","dome","island","cruise"]; %>
+                <% categories.forEach(cat => { %>
+                    <option value="<%= cat %>" <%= listing.category === cat ? "selected" : "" %>>
+                        <%= cat.replace(/\b\w/g, c => c.toUpperCase()) %>
+                    </option>
+                <% }) %>
+            </select>
+            <div class="invalid-feedback">Please choose a category.</div>
+        </div>
 
-        <br><br>
-        
-        
         <div class="row">
         <div class="mb-2 col-md-4">
             <label for="price" class="form-label">Price:</label>
@@ -58,7 +64,6 @@
         </div>
 
         </div>
-        <br><br>
       
         <div class="mb-3">
             <label for="location" class="form-label">Location:</label>
@@ -66,13 +71,9 @@
              <div class="invalid-feedback">Please provide a location.</div>
 
         </div>
-        <br><br>
   
-        <button type="submit" class="btn btn-dark edit-btn mb-4 mt-0">edit</button>
+        <button type="submit" class="btn edit-btn mb-4 mt-0">edit</button>
     </form>
-
-    
-</body>
 </div>
 </div>
 <script src="/js/script.js"></script>

@@ -33,6 +33,26 @@
         type="file" class="form-control"/>
     </div>
 
+    <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <select name="listing[category]" id="category" class="form-select" required>
+            <option value="" disabled selected>Choose a category</option>
+            <option value="trending">Trending</option>
+            <option value="rooms">Rooms</option>
+            <option value="iconic cities">Iconic Cities</option>
+            <option value="mountain">Mountain</option>
+            <option value="castle">Castle</option>
+            <option value="amazing">Amazing</option>
+            <option value="arctic">Arctic</option>
+            <option value="camping">Camping</option>
+            <option value="farm">Farm</option>
+            <option value="dome">Dome</option>
+            <option value="island">Island</option>
+            <option value="cruise">Cruise</option>
+        </select>
+        <div class="invalid-feedback">Please choose a category.</div>
+    </div>
+
    
     <div class="row">
     <div class="mb-3 col-md-4">
@@ -63,7 +83,7 @@
 
     </div>
 
-    <button class="btn btn-dark add-btn">ADD</button>
+    <button class="btn add-btn">ADD</button>
 
 </form>
 </div>

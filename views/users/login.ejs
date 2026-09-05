@@ -1,39 +1,125 @@
 <% layout("/layouts/boilerplate") %>
-<div class ="row mt-3"> 
-    <h1 class="col-6 offset-3">Login for wanderlust </h1>
-<div class="col-6 offset-3"> 
-   
-    <form action="/login" method="POST" class="needs-validation" novalidate>
-        <div class="mb-3">
-        <label for="username" class="form-label">Username</label>
-        <input 
-        name="username" 
-        id="username"
-        type="text" 
-        class="form-control" 
-        required/>
-</div>
-     <!-- <div class="mb-3">
-        <label for="username" class="form-label">Email</label>
-        <input 
-        name="email" 
-        id="email"
-        type="text" 
-        class="form-control" 
-        required/>
-</div> -->
 
-  <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input 
-        name="password" 
-        id="password"
-        type="password" 
-        class="form-control" 
-        required/>
-</div>
-<button class="btn btn-success">login</button>
+<style>
+.auth-page{
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+  min-height: 82vh;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.55) 100%),
+              url("/images/auth-hero.jpg") center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
 
-    </form>
-</div>
+.auth-headline{
+  position: absolute;
+  top: 3rem;
+  left: 3rem;
+  color: #fff;
+  max-width: 420px;
+}
+
+.auth-headline h2{
+  font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.auth-headline p{
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+}
+
+.auth-card{
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: var(--radius-md);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: var(--shadow-md);
+}
+
+.auth-tabs{
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.auth-tabs a{
+  text-decoration: none;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid transparent;
+}
+
+.auth-tabs a.active{
+  color: var(--color-text);
+  border-bottom-color: var(--color-brand);
+}
+
+@media (max-width: 768px){
+  .auth-page{
+    min-height: 90vh;
+    align-items: flex-end;
+    padding-bottom: 2.5rem;
+  }
+  .auth-headline{
+    top: 2rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    max-width: none;
+  }
+  .auth-card{
+    max-width: 100%;
+  }
+}
+</style>
+
+<div class="auth-page">
+  <div class="auth-headline">
+    <h2>Find your next stay</h2>
+    <p>Unique homes, curated getaways, and everything in between.</p>
+  </div>
+
+  <div class="auth-card">
+    <div class="auth-tabs">
+      <a href="/login" class="active">Log in</a>
+      <a href="/signup">Sign up</a>
     </div>
+
+    <form action="/login" method="POST" class="needs-validation" novalidate>
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+        name="username"
+        id="username"
+        type="text"
+        class="form-control"
+        required/>
+        <div class="invalid-feedback">Please enter your username.</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+        name="password"
+        id="password"
+        type="password"
+        class="form-control"
+        required/>
+        <div class="invalid-feedback">Please enter your password.</div>
+      </div>
+
+      <button class="btn add-btn w-100 mt-2">Log in</button>
+    </form>
+  </div>
+</div>

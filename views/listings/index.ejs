@@ -1,17 +1,77 @@
 <% layout("/layouts/boilerplate.ejs") %>
 
 <style>
+#filters-row{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 1rem;
+  position: relative;
+}
+
+#filters-wrap{
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+#filters-wrap::after{
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 2.5rem;
+  background: linear-gradient(to right, rgba(255,255,255,0), var(--color-surface));
+  pointer-events: none;
+}
+
 #filters{
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-evenly;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.65rem;
+  width: 100%;
+}
+
+/* Slim, styled scrollbar instead of the browser's default chunky one */
+#filters::-webkit-scrollbar{
+  height: 5px;
+}
+#filters::-webkit-scrollbar-track{
+  background: var(--color-surface-alt);
+  border-radius: var(--radius-pill);
+}
+#filters::-webkit-scrollbar-thumb{
+  background: var(--color-border);
+  border-radius: var(--radius-pill);
+}
+#filters::-webkit-scrollbar-thumb:hover{
+  background: var(--color-text-muted);
+}
+#filters{
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) var(--color-surface-alt);
 }
 
 .filter{
   text-align: center;
-  margin-right: 2rem;
-  margin-top: 2rem;
-  opacity: 0.7;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.6;
+  flex: 0 0 auto;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid transparent;
+  transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+
+.filter i{
+  font-size: 1.1rem;
 }
 
 .filter:hover {
@@ -19,93 +79,174 @@
   cursor: pointer;
 }
 
+.filter.active{
+  opacity: 1;
+  border-bottom-color: var(--color-text);
+}
+
 .filter p{
-  font-size: 0.8 rem;
+  font-size: 0.75rem;
+  margin: 0.35rem 0 0 0;
+  white-space: nowrap;
 }
 
 .tax-info {
-  display: none;  
+  display: none;
 }
 
 .tax-toggle{
-border : 1px solid black;
-border-radius: 1rem;
-height: 3.25rem;
-padding: 1rem;
-margin-left: 5rem;
-display: flex;
-align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 0.5rem 1rem;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
+.listing-card{
+  transition: transform 0.15s ease;
+}
 
+.listing-card:hover{
+  transform: translateY(-4px);
+}
+
+.listing-location{
+  color: var(--color-text-muted);
+  font-weight: 400;
+  font-size: 0.9rem;
+  margin: 0.1rem 0 0.3rem 0;
+}
+
+.listing-price{
+  font-weight: 600;
+}
+
+.category-badge{
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: rgba(255,255,255,0.9);
+  color: var(--color-text);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+}
+
+.empty-state{
+  text-align: center;
+  padding: 4rem 1rem;
+  color: var(--color-text-muted);
+}
+
+.empty-state i{
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.clear-filter-link{
+  font-size: 0.85rem;
+  margin-left: 0.5rem;
+}
 </style>
 
-<div id="filters">
-  <div class="filter">
-  <div><i class="fa-solid fa-fire"></i></div>
-    <p>Trending</p>
+<div id="filters-row">
+  <div id="filters-wrap">
+  <div id="filters">
+    <a href="/listings" class="filter <%= currCategory === '' ? 'active' : '' %>">
+      <div><i class="fa-solid fa-fire"></i></div>
+      <p>Trending</p>
+    </a>
+    <a href="/listings?category=rooms" class="filter <%= currCategory === 'rooms' ? 'active' : '' %>">
+      <div><i class="fa-solid fa-bed"></i></div>
+      <p>Rooms</p>
+    </a>
+    <a href="/listings?category=iconic cities" class="filter <%= currCategory === 'iconic cities' ? 'active' : '' %>">
+      <div><i class="fa-solid fa-mountain-city"></i></div>
+      <p>Iconic Cities</p>
+    </a>
+    <a href="/listings?category=mountain" class="filter <%= currCategory === 'mountain' ? 'active' : '' %>">
+      <div><i class="fa-solid fa-mountain"></i></div>
+      <p>Mountain</p>
+    </a>
+    <a href="/listings?category=castle" class="filter <%= currCategory === 'castle' ? 'active' : '' %>">
+      <div><i class="fa-brands fa-fort-awesome"></i></div>
+      <p>Castle</p>
+    </a>
+    <a href="/listings?category=amazing" class="filter <%= currCategory === 'amazing' ? 'active' : '' %>">
+      <div><i class="fa-solid fa-person-swimming"></i></div>
+      <p>Amazing</p>
+    </a>
+    <a href="/listings?category=arctic" class="filter <%= currCategory === 'arctic' ? 'active' : '' %>">
+      <div><i class="fa-solid fa-snowflake"></i></div>
+      <p>Arctic</p>
+    </a>
+    <a href="/listings?category=camping" class="filter <%= currCategory === 'camping' ? 'active' : '' %>">
+      <div><i class="fa-solid fa-tent"></i></div>
+      <p>Camping</p>
+    </a>
+    <a href="/listings?category=farm" class="filter <%= currCategory === 'farm' ? 'active' : '' %>">
+      <div><i class="fa-solid fa-cow"></i></div>
+      <p>Farm</p>
+    </a>
+    <a href="/listings?category=dome" class="filter <%= currCategory === 'dome' ? 'active' : '' %>">
+      <div><i class="fa-solid fa-igloo"></i></div>
+      <p>Dome</p>
+    </a>
+    <a href="/listings?category=island" class="filter <%= currCategory === 'island' ? 'active' : '' %>">
+      <div><i class="fa-solid fa-earth-oceania"></i></div>
+      <p>Island</p>
+    </a>
+    <a href="/listings?category=cruise" class="filter <%= currCategory === 'cruise' ? 'active' : '' %>">
+      <div><i class="fa-solid fa-ship"></i></div>
+      <p>Cruise</p>
+    </a>
   </div>
-  <div class="filter">
-  <div><i class="fa-solid fa-bed"></i></div>
-    <p>Rooms</p>
-  </div>
-   <div class="filter">
-  <div><i class="fa-solid fa-mountain-city"></i></div>
-    <p>Iconic Cities</p>
-  </div>
-  <div class="filter">
-  <div><i class="fa-solid fa-mountain"></i></div>
-    <p> Mountain</p>
-  </div>
-  <div class="filter">
-  <div><i class="fa-brands fa-fort-awesome"></i></div>
-    <p> Castle</p>
-  </div>
-  <div class="filter">
-  <div><i class="fa-solid fa-person-swimming"></i></div>
-    <p> Amazing </p>
-  </div>
-  <div class="filter">
-  <div><i class="fa-solid fa-snowflake"></i></div>
-    <p> Arctic</p>
-  </div>
-    <div class="filter">
-  <div><i class="fa-solid fa-tent"></i></div>
-    <p> Camping </p>
-  </div>
- <div class="filter">
-  <div><i class="fa-solid fa-cow"></i></div>
-    <p> Farm </p>
-  </div>
-  <div class="filter">
-  <div><i class="fa-solid fa-igloo"></i></div>
-    <p> Dome </p>
-  </div>
- <div class="filter">
-  <div><i class="fa-solid fa-earth-oceania"></i></div>
-    <p> Island </p>
-  </div>
-  <div><i class="fa-solid fa-ship"></i></div>
-    <p> Cruise </p>
   </div>
 
-  <div class="tax-toggle"> 
-<div class="form-check-reverse  form-switch">
-  <input class="form-check-input" 
-  type="checkbox" 
-  role="switch" 
-  id="switchCheckDefault"/>
-  <label class="form-check-label" for="switchCheckDefault">Display Taxes</label>
-</div>
-</div>
+  <div class="tax-toggle">
+    <div class="form-check-reverse form-switch mb-0">
+      <input class="form-check-input"
+      type="checkbox"
+      role="switch"
+      id="switchCheckDefault"/>
+      <label class="form-check-label" for="switchCheckDefault">Display Taxes</label>
+    </div>
+  </div>
 </div>
 
+<% if (currCategory || currSearch) { %>
+  <p class="text-muted mt-3 mb-0">
+    <% if (currSearch) { %>Results for "<%= currSearch %>"<% } %>
+    <% if (currCategory) { %> in <b><%= currCategory %></b><% } %>
+    <a href="/listings" class="clear-filter-link">Clear</a>
+  </p>
+<% } %>
 
-<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+<% if (allListings.length === 0) { %>
+  <div class="empty-state">
+    <i class="fa-solid fa-compass"></i>
+    <p>
+      <% if (currCategory || currSearch) { %>
+        No listings match that filter. <a href="/listings">Clear filters</a> to see everything.
+      <% } else { %>
+        No listings yet. Be the first to <a href="/listings/new">add one</a>.
+      <% } %>
+    </p>
+  </div>
+<% } else { %>
+
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 mt-1">
 
 <% for(let listing of allListings){ %>
 
-<a href="/listings/<%= listing._id %>" class="Listing-link">
+<a href="/listings/<%= listing._id %>" class="listing-link">
 
   <div class="card col listing-card">
     <img
@@ -115,13 +256,21 @@ align-items: center;
       style="height:20rem"
     />
 
-    <div class="card-img-overlay">ananya</div>
+    <div class="card-img-overlay"></div>
+
+    <% if(listing.category){ %>
+      <span class="category-badge"><%= listing.category %></span>
+    <% } %>
 
     <div class="card-body">
+      <p class="card-text mb-0">
+        <b><%= listing.title %></b>
+      </p>
+      <p class="listing-location">
+        <%= listing.location %>, <%= listing.country %>
+      </p>
       <p class="card-text">
-        <b><%= listing.title %></b><br/>
-        &#8377;
-        <%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %>/night
+        <span class="listing-price">&#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %></span> / night
         <i class="tax-info"> &nbsp; &nbsp; +18% GST</i>
       </p>
     </div>
@@ -132,6 +281,7 @@ align-items: center;
 <% } %>
 
 </div>
+<% } %>
 
 <script>
   let taxSwitch = document.getElementById("switchCheckDefault");
@@ -139,7 +289,7 @@ align-items: center;
 taxSwitch.addEventListener("click", () => {
   let taxInfo = document.getElementsByClassName("tax-info");
   for(info of taxInfo){
-    if(info.style.display != "inline"){ 
+    if(info.style.display != "inline"){
           info.style.display = "inline";
     } else {
       info.style.display = "none";
