@@ -1,0 +1,117 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<style>
+.wishlist-form{
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  margin: 0;
+}
+
+.wishlist-btn{
+  background: rgba(255,255,255,0.85);
+  border: none;
+  border-radius: 50%;
+  width: 2.1rem;
+  height: 2.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+.wishlist-btn .fa-heart{
+  font-size: 1rem;
+  color: var(--color-brand);
+}
+
+.category-badge{
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: rgba(255,255,255,0.9);
+  color: var(--color-text);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
+}
+
+.listing-location{
+  color: var(--color-text-muted);
+  font-weight: 400;
+  font-size: 0.9rem;
+  margin: 0.1rem 0 0.3rem 0;
+}
+
+.listing-price{
+  font-weight: 600;
+}
+
+.empty-state{
+  text-align: center;
+  padding: 4rem 1rem;
+  color: var(--color-text-muted);
+}
+
+.empty-state i{
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+</style>
+
+<h3 class="mt-4 mb-3">My Wishlist</h3>
+
+<% if (wishlistListings.length === 0) { %>
+  <div class="empty-state">
+    <i class="fa-regular fa-heart"></i>
+    <p>Nothing saved yet. <a href="/listings">Browse listings</a> and tap the heart to save one.</p>
+  </div>
+<% } else { %>
+
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 mt-1">
+
+<% for(let listing of wishlistListings){ %>
+
+  <div class="card col listing-card">
+    <a href="/listings/<%= listing._id %>" class="listing-link">
+      <img
+        src="<%= (listing.image && listing.image.url) ? listing.image.url : 'https://images.unsplash.com/photo-1560184897-ae75f418493e?auto=format&fit=crop&w=800&q=60' %>"
+        class="card-img-top"
+        alt="listing_image"
+        style="height:20rem"
+      />
+      <div class="card-img-overlay"></div>
+      <% if(listing.category){ %>
+        <span class="category-badge"><%= listing.category %></span>
+      <% } %>
+
+      <div class="card-body">
+        <p class="card-text mb-0">
+          <b><%= listing.title %></b>
+        </p>
+        <p class="listing-location">
+          <%= listing.location %>, <%= listing.country %>
+        </p>
+        <p class="card-text">
+          <span class="listing-price">&#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %></span> / night
+        </p>
+      </div>
+    </a>
+
+    <form method="POST" action="/listings/<%= listing._id %>/wishlist" class="wishlist-form">
+      <button type="submit" class="wishlist-btn" aria-label="Remove from wishlist">
+        <i class="fa-solid fa-heart"></i>
+      </button>
+    </form>
+  </div>
+
+<% } %>
+
+</div>
+<% } %>

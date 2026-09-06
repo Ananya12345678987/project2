@@ -1,0 +1,93 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<style>
+.my-listings-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.my-listing-card{
+  position: relative;
+}
+
+.my-listing-actions{
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.my-listing-actions .btn{
+  flex: 1;
+  font-size: 0.85rem;
+}
+
+.empty-state{
+  text-align: center;
+  padding: 4rem 1rem;
+  color: var(--color-text-muted);
+}
+
+.empty-state i{
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+</style>
+
+<div class="my-listings-header">
+  <h3 class="mb-0">My Listings</h3>
+  <a href="/listings/new" class="btn add-btn">+ Add New</a>
+</div>
+
+<% if (myListings.length === 0) { %>
+  <div class="empty-state">
+    <i class="fa-solid fa-house-chimney"></i>
+    <p>You haven't posted any listings yet. <a href="/listings/new">Create your first one</a>.</p>
+  </div>
+<% } else { %>
+
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 mt-1">
+
+<% for(let listing of myListings){ %>
+
+  <div class="card col my-listing-card">
+    <a href="/listings/<%= listing._id %>" class="listing-link">
+      <img
+        src="<%= (listing.image && listing.image.url) ? listing.image.url : 'https://images.unsplash.com/photo-1560184897-ae75f418493e?auto=format&fit=crop&w=800&q=60' %>"
+        class="card-img-top"
+        alt="listing_image"
+        style="height:16rem"
+      />
+      <div class="card-img-overlay"></div>
+      <% if(listing.category){ %>
+        <span class="category-badge"><%= listing.category %></span>
+      <% } %>
+    </a>
+
+    <div class="card-body">
+      <p class="card-text mb-0">
+        <b><%= listing.title %></b>
+      </p>
+      <p class="listing-location">
+        <%= listing.location %>, <%= listing.country %>
+      </p>
+      <p class="card-text">
+        <span class="listing-price">&#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %></span> / night
+      </p>
+
+      <div class="my-listing-actions">
+        <a href="/listings/<%= listing._id %>/edit" class="btn edit-btn">Edit</a>
+        <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="mb-0 flex-fill">
+          <button class="btn btn-outline-danger-soft w-100">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<% } %>
+
+</div>
+<% } %>

@@ -3,6 +3,9 @@ const User = require("../models/user");
 
 
 module.exports.renderSignupForm = (req,res) => {
+    if(req.isAuthenticated()){
+        return res.redirect("/listings");
+    }
     res.render("users/signup.ejs");
 };
 
@@ -36,6 +39,9 @@ module.exports.signup = async(req,res,next) => {
 
 
 module.exports.renderLoginForm = (req,res) => {
+    if(req.isAuthenticated()){
+        return res.redirect("/listings");
+    }
     res.render("users/login.ejs");
 };
 

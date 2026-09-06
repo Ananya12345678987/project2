@@ -124,6 +124,40 @@
   font-weight: 600;
 }
 
+.wishlist-form{
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  margin: 0;
+}
+
+.wishlist-btn{
+  background: rgba(255,255,255,0.85);
+  border: none;
+  border-radius: 50%;
+  width: 2.1rem;
+  height: 2.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  color: var(--color-text);
+  transition: transform 0.1s ease;
+}
+
+.wishlist-btn:hover{
+  transform: scale(1.08);
+}
+
+.wishlist-btn .fa-heart{
+  font-size: 1rem;
+}
+
+.wishlist-btn .wishlist-active{
+  color: var(--color-brand);
+}
+
 .category-badge{
   position: absolute;
   top: 0.75rem;
@@ -246,11 +280,10 @@
 
 <% for(let listing of allListings){ %>
 
-<a href="/listings/<%= listing._id %>" class="listing-link">
-
-  <div class="card col listing-card">
+<div class="card col listing-card">
+  <a href="/listings/<%= listing._id %>" class="listing-link">
     <img
-      src="<%= listing.image.url %>"
+      src="<%= (listing.image && listing.image.url) ? listing.image.url : 'https://images.unsplash.com/photo-1560184897-ae75f418493e?auto=format&fit=crop&w=800&q=60' %>"
       class="card-img-top"
       alt="listing_image"
       style="height:20rem"
@@ -274,9 +307,17 @@
         <i class="tax-info"> &nbsp; &nbsp; +18% GST</i>
       </p>
     </div>
-  </div>
+  </a>
 
-</a>
+  <% if(currUser){ %>
+    <% const isWishlisted = currUser.wishlist && currUser.wishlist.some(id => id.equals(listing._id)); %>
+    <form method="POST" action="/listings/<%= listing._id %>/wishlist" class="wishlist-form">
+      <button type="submit" class="wishlist-btn" aria-label="Save to wishlist">
+        <i class="<%= isWishlisted ? 'fa-solid' : 'fa-regular' %> fa-heart <%= isWishlisted ? 'wishlist-active' : '' %>"></i>
+      </button>
+    </form>
+  <% } %>
+</div>
 
 <% } %>
 
@@ -296,4 +337,4 @@ taxSwitch.addEventListener("click", () => {
     }
   }
 });
-</script>
+</script> 

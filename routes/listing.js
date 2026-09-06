@@ -29,6 +29,12 @@ router
  //New Route
 router.get("/new",isLoggedIn,ListingController.renderNewForm);
 
+router.get("/mine", isLoggedIn, wrapAsync(ListingController.myListings));
+
+router.get("/wishlist", isLoggedIn, wrapAsync(ListingController.showWishlist));
+
+router.post("/:id/wishlist", isLoggedIn, wrapAsync(ListingController.toggleWishlist));
+
 router
 .route("/:id")
 .get(wrapAsync(ListingController.showListing))

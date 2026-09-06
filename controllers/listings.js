@@ -1,5 +1,31 @@
 const Listing = require("../models/listing");
+const User = require("../models/user");
 const fetch = require("node-fetch");
+
+module.exports.toggleWishlist = async(req,res) => {
+    const { id } = req.params;
+    const user = await User.findById(req.user._id);
+
+    const alreadySaved = user.wishlist.some(listingId => listingId.equals(id));
+
+    if(alreadySaved){
+        user.wishlist.pull(id);
+        req.flash("success", "Removed from wishlist");
+    } else {
+        user.wishlist.push(id);
+        req.flash("success", "Added to wishlist");
+    }
+
+    await user.save();
+
+    res.redirect(req.get("Referer") || `/listings/${id}`);
+};
+
+module.exports.showWishlist = async(req,res) => {
+    const user = await User.findById(req.user._id).populate("wishlist");
+    const wishlistListings = user.wishlist.filter(listing => listing !== null);
+    res.render("listings/wishlist.ejs", { wishlistListings });
+};
 
 module.exports.index = async(req,res) => {
         let { category, search } = req.query;
@@ -28,6 +54,11 @@ module.exports.index = async(req,res) => {
 
 module.exports.renderNewForm = async(req,res) => {   
     res.render("listings/new.ejs");
+};
+
+module.exports.myListings = async(req,res) => {
+    const myListings = await Listing.find({ owner: req.user._id });
+    res.render("listings/my-listings.ejs", { myListings });
 };
 
 

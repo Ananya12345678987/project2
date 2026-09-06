@@ -8,6 +8,12 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  wishlist: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Listing",
+    },
+  ],
 });
 
 console.log(passportLocalMongoose);

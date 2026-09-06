@@ -94,7 +94,7 @@
   <h2 class="show-title"><%= listing.title %></h2>
   <p class="show-meta"><%= listing.location %>, <%= listing.country %></p>
 
-  <img src="<%= listing.image.url %>" class="show-img" alt="listing_image">
+  <img src="<%= (listing.image && listing.image.url) ? listing.image.url : 'https://images.unsplash.com/photo-1560184897-ae75f418493e?auto=format&fit=crop&w=800&q=60' %>" class="show-img" alt="listing_image">
 
   <div class="show-price-bar">
     <span class="price">&#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %> <small class="text-muted fw-normal">/ night</small></span>
@@ -106,6 +106,16 @@
           <button class="btn btn-outline-danger-soft">Delete</button>
         </form>
       </div>
+    <% } %>
+
+    <% if(currUser && (!listing.owner || !listing.owner._id.equals(currUser._id))){ %>
+      <% const isWishlisted = currUser.wishlist && currUser.wishlist.some(id => id.equals(listing._id)); %>
+      <form method="POST" action="/listings/<%= listing._id %>/wishlist" class="mb-0">
+        <button type="submit" class="btn btn-outline-danger-soft">
+          <i class="<%= isWishlisted ? 'fa-solid' : 'fa-regular' %> fa-heart"></i>
+          <%= isWishlisted ? 'Saved' : 'Save' %>
+        </button>
+      </form>
     <% } %>
   </div>
 

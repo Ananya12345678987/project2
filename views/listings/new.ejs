@@ -3,7 +3,7 @@
 <div class="col-8 offset-2"> 
 <h3>Create a New Listing</h3>
 
-<form method="POST" action="/listings" novalidate class="needs-validation"enctype="multipart/form-data">
+<form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
 
     <div class="mb-3">
         <label for="title" class="form-label">Title</label>
@@ -30,7 +30,13 @@
     <div class="mb-3">
         <label for="image" class="form-label">Upload Image</label>
         <input name="listing[image]"
-        type="file" class="form-control"/>
+        id="image"
+        type="file"
+        accept="image/png, image/jpeg, image/jpg"
+        class="form-control"
+        required/>
+        <div class="invalid-feedback">Please upload a photo of the listing.</div>
+        <img id="image-preview" src="" alt="" class="img-thumbnail mt-2" style="max-width:250px; display:none;">
     </div>
 
     <div class="mb-3">
@@ -90,3 +96,15 @@
 </div>
 
 <script src="/js/script.js"> </script>
+<script>
+  document.getElementById("image").addEventListener("change", function(e){
+    const preview = document.getElementById("image-preview");
+    const file = e.target.files[0];
+    if(file){
+      preview.src = URL.createObjectURL(file);
+      preview.style.display = "block";
+    } else {
+      preview.style.display = "none";
+    }
+  });
+</script>

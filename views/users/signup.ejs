@@ -1,6 +1,32 @@
 <% layout("/layouts/boilerplate") %>
 
 <style>
+/* Override the shared navbar just for this page: make it float
+   transparently over the hero image instead of sitting as a
+   separate white bar above it. */
+.navbar{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: transparent !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  z-index: 20;
+}
+
+.navbar .fa-compass{
+  color: #fff;
+}
+
+/* AFTER */
+#navbarNavAltMarkup{
+  display: none !important;
+}
+
+.navbar .navbar-toggler{
+  display: none !important;
+}
 .auth-page{
   position: relative;
   left: 50%;
@@ -8,8 +34,8 @@
   margin-left: -50vw;
   margin-right: -50vw;
   width: 100vw;
-  min-height: 82vh;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.55) 100%),
+  min-height: 100vh;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.1) 25%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0.55) 100%),
               url("/images/auth-hero.jpg") center/cover no-repeat;
   display: flex;
   align-items: center;
@@ -19,7 +45,7 @@
 
 .auth-headline{
   position: absolute;
-  top: 3rem;
+  top: 6rem;
   left: 3rem;
   color: #fff;
   max-width: 420px;
